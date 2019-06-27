@@ -3,7 +3,8 @@ import numpy as np
 import struct
 
 def load_mnist (path, kind='train'):
-	# load from ubyte files
+	# load ubyte files downloaded from Yann LeCun's page
+	# http://yann.lecun.com/exdb/mnist/
 	labels_path = os.path.join(path, "%s-labels-idx1-ubyte" % kind)
 	pixels_path = os.path.join(path, "%s-images-idx3-ubyte" % kind)
 
