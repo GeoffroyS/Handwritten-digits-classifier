@@ -1,2 +1,4 @@
 # Handwritten digits classifier
-This serves as a 'blog' for now...
+
+Currently implementing the load_mnist function
+todo: add a way to get a validation test returned as well
