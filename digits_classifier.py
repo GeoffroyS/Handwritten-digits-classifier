@@ -8,8 +8,12 @@ from sklearn.model_selection import train_test_split
 def load_mnist (path, kind='train'):
 	# load ubyte files downloaded from Yann LeCun's page
 	# http://yann.lecun.com/exdb/mnist/
+	# return a dictionary containing the 3 pd.DataFrames:
+	# train, validation, test
 
-	for kind in ['train', 'test']
+	df_dict = {}
+
+	for kind in ['train', 'test']:
 		labels_path = os.path.join(path, "%s-labels-idx1-ubyte" % kind)
 		pixels_path = os.path.join(path, "%s-images-idx3-ubyte" % kind)
 
@@ -26,21 +30,19 @@ def load_mnist (path, kind='train'):
 		df = pd.DataFrame(pixels)
 		df['target'] = labels
 
-		if kind eq 'train':
-			X = df[:,:-1]
+		if kind == 'train':
+			X = df.iloc[:,:-1]
 			y = df['target']
-			X_train, X_validation, y_train, y_validation = train_test_split(X, y, random_state=0)
+			X_train, X_validation, y_train, y_validation = train_test_split(X, y, train_size=50000, random_state=0)
+			df_train = pd.concat([X_train, y_train], axis=1, sort=False)
+			df_validation = pd.concat([X_validation, y_validation], axis=1, sort=False)
+			df_dict["train"] = df_train
+			df_dict["validation"] = df_validation
+		else:
+			df_dict["test"] = df
 
-	#return df
+	return df_dict
 
-#print(load_mnist('').shape) # (60000, 785): 60k rows 
-							# and 28 by 28 = 784px images + 'target' column
-
-
-# if validation_set and kind == 'train':
-# 	X_train, X_val, y_train, y_val = train_test_split(df.iloc[:,:-1],
-# 		df['target'],
-# 		train_size=50000,
-# 		random_state=0)
-# 	df = X_val
-# 	df['target'] = y_val
+datasets = load_mnist('')
+for dataset_type in datasets:
+	print(dataset_type, datasets[dataset_type].shape)
