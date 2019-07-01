@@ -1,15 +1,20 @@
+#!/usr/bin/env python
+
 import os
 import struct
 
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 def load_mnist (path, kind='train'):
-	# load ubyte files downloaded from Yann LeCun's page
-	# http://yann.lecun.com/exdb/mnist/
-	# return a dictionary containing the 3 pd.DataFrames:
-	# train, validation, test
+	'''
+	load ubyte files downloaded from Yann LeCun's page
+	http://yann.lecun.com/exdb/mnist/
+	return a dictionary containing the 3 pd.DataFrames:
+	train, validation, test
+	'''
 
 	df_dict = {}
 
@@ -33,7 +38,7 @@ def load_mnist (path, kind='train'):
 		if kind == 'train':
 			X = df.iloc[:,:-1]
 			y = df['target']
-			X_train, X_validation, y_train, y_validation = train_test_split(X, y, train_size=50000, random_state=0)
+			X_train, X_validation, y_train, y_validation = train_test_split(X, y, train_size=50000, test_size=10000, random_state=0)
 			df_train = pd.concat([X_train, y_train], axis=1, sort=False)
 			df_validation = pd.concat([X_validation, y_validation], axis=1, sort=False)
 			df_dict["train"] = df_train
@@ -43,8 +48,30 @@ def load_mnist (path, kind='train'):
 
 	return df_dict
 
+def _display_0_9(datasets_dict):
+	'''
+	take the first instances of the 10 digits from the training set 
+	and display them
+	'''
+	fig, ax = plt.subplots(nrows=2, ncols=5, sharex=True, sharey=True)
+	ax = ax.flatten()
+	X_train = datasets_dict["train"].iloc[:,0:784].to_numpy()
+	y_train = datasets_dict["train"].iloc[:,-1].to_numpy()
+	df_train = datasets_dict["train"]
+
+	for i in range(10):
+		img = X_train[y_train == i][0].reshape(28, 28)
+		ax[i].imshow(img, cmap='Greys', interpolation='nearest')
+	ax[0].set_xticks([])
+	ax[0].set_yticks([])
+	plt.tight_layout()
+	plt.show()
 
 if __name__ == '__main__':
-	datasets = load_mnist('')
-	for dataset_type in datasets:
-		print(dataset_type, datasets[dataset_type].shape)
+	datasets_dict = load_mnist('')
+	for dataset_type in datasets_dict:
+		print(dataset_type, datasets_dict[dataset_type].shape)
+
+	_display_0_9(datasets_dict)
+
+
