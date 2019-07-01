@@ -43,6 +43,8 @@ def load_mnist (path, kind='train'):
 
 	return df_dict
 
-datasets = load_mnist('')
-for dataset_type in datasets:
-	print(dataset_type, datasets[dataset_type].shape)
+
+if __name__ == '__main__':
+	datasets = load_mnist('')
+	for dataset_type in datasets:
+		print(dataset_type, datasets[dataset_type].shape)
