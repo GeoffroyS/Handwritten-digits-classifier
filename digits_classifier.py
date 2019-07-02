@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def load_mnist (path, kind='train'):
 	"""
@@ -85,9 +86,18 @@ def _display_digits(datasets_dict, plot_type='zero_nine', digit=3):
 
 def _display_digits_distrib(datasets_dict):
 	df_train = datasets_dict["train"]
+	digits_dict = {}
 	for i in range(10):
+		digits_dict[i] = df_train.loc[df_train['target'] == i].shape[0]
 		print('number of instances of {} in dataset: {}'
-			.format(i, df_train.loc[df_train['target'] == i].shape[0]))
+			.format(i, digits_dict[i]))
+
+	x = [key for key in digits_dict]
+	y = [val for val in digits_dict.values()]
+
+	plt.bar(x, y)
+	plt.show()
+
 
 if __name__ == '__main__':
 	datasets_dict = load_mnist('')

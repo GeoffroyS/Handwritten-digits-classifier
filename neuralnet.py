@@ -29,3 +29,9 @@ class NeuralNet(object):
 		self.number_layers = len(sizes)
 		self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
 		self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+
+	def _sigmoid(self, z):
+		return 1.0/(1.0+np.exp(-z))
+
+	def _sigmoid_gradient(self, z):
+		return self._sigmoid(z)*(1 - self._sigmoid(z))
