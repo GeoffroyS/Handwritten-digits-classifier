@@ -9,12 +9,12 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 def load_mnist (path, kind='train'):
-	'''
+	"""
 	load ubyte files downloaded from Yann LeCun's page
 	http://yann.lecun.com/exdb/mnist/
 	return a dictionary containing the 3 pd.DataFrames:
 	train, validation, test
-	'''
+	"""
 
 	df_dict = {}
 
@@ -55,14 +55,14 @@ def load_mnist (path, kind='train'):
 	return df_dict
 
 def _display_digits(datasets_dict, plot_type='zero_nine', digit=3):
-	'''
+	"""
 	- plot_type = 'zero_nine':
 	  take the first instances of the 10 digits
 	  from the training set and display them
 	- plot_type = 'same_digit':
 	  display the first 10 instances of a single digit
 	  ('digit' arg, 3 by default)
-	'''
+	"""
 	fig, ax = plt.subplots(nrows=2, ncols=5, sharex=True, sharey=True)
 	ax = ax.flatten()
 	X_train = datasets_dict["train"].iloc[:,0:784].to_numpy()
