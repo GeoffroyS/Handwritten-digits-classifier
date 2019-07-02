@@ -38,7 +38,13 @@ def load_mnist (path, kind='train'):
 		if kind == 'train':
 			X = df.iloc[:,:-1]
 			y = df['target']
-			X_train, X_validation, y_train, y_validation = train_test_split(X, y, train_size=50000, test_size=10000, random_state=0)
+			X_train, X_validation, y_train, y_validation = train_test_split(
+				X, 
+				y, 
+				train_size=50000, 
+				test_size=10000, 
+				random_state=0
+				)
 			df_train = pd.concat([X_train, y_train], axis=1, sort=False)
 			df_validation = pd.concat([X_validation, y_validation], axis=1, sort=False)
 			df_dict["train"] = df_train
@@ -80,7 +86,8 @@ def _display_digits(datasets_dict, plot_type='zero_nine', digit=3):
 def _display_digits_distrib(datasets_dict):
 	df_train = datasets_dict["train"]
 	for i in range(10):
-		print('number of instances of {} in dataset: {}'.format(i, df_train.loc[df_train['target'] == i].shape[0]))
+		print('number of instances of {} in dataset: {}'
+			.format(i, df_train.loc[df_train['target'] == i].shape[0]))
 
 if __name__ == '__main__':
 	datasets_dict = load_mnist('')
