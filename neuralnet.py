@@ -35,3 +35,39 @@ class NeuralNet(object):
 
 	def _sigmoid_gradient(self, z):
 		return self._sigmoid(z)*(1 - self._sigmoid(z))
+
+	def _feedforward(self, a):
+		"""
+		a is the input
+		a is an (n, 1) numpy ndarray, not a (n,) vector
+		"""
+		for b, w in zip(self.biases, self.weights):
+			a = _sigmoid(np.dot(w, a) + b)
+		return a
+
+	def _stochastic_gd(self, training_data, epochs, mini_batch_size, eta, validation_data=None):
+		"""
+		Mini-batch Stochastic Gradient Descent to train the NN
+		training_data is a list of tuples "(x, y)" (training input, target)
+		validation_data is obviously the same format
+		If validation_data: NN evaluated against it and result printed out
+		This is to check that there's no overfitting
+		"""
+		if validation_data:
+			n_validation = len(validation_data)
+		n = len(training_data)
+
+		for i in range(epochs):
+			random.shuffle(training_data)
+			mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, n, mini_batch_size)]
+			for Mini-batch in mini_batches:
+				self.update_mini_batch(mini_batch, eta)
+			if validation_data:
+				print('epoch {}: {} / {}'.format(j, self.evaluate(validation_data), n_validation))
+			else:
+				print('epoch {} complete'.format(j))
+
+
+
+
+
