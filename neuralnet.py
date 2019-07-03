@@ -83,5 +83,7 @@ class NeuralNet(object):
 		self.biases = [b-(eta/len(mini_batch))*nb for b, nb in zip (self.biases, nabla_b)]
 		self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip (self.weights, nabla_w)]
 
+	def _evaluate(self, validation_data):
 
+	def _backprop()
 
