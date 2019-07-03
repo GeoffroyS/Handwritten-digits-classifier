@@ -45,13 +45,14 @@ class NeuralNet(object):
 			a = _sigmoid(np.dot(w, a) + b)
 		return a
 
-	def _stochastic_gd(self, training_data, epochs, mini_batch_size, eta, validation_data=None):
+	def _stochastic_gd(self, training_data, epochs, mini_batch_size, eta=0.1, validation_data=None):
 		"""
 		Mini-batch Stochastic Gradient Descent to train the NN
 		training_data is a list of tuples "(x, y)" (training input, target)
 		validation_data is obviously the same format
 		If validation_data: NN evaluated against it and result printed out
 		This is to check that there's no overfitting
+		eta is the learning rate
 		"""
 		if validation_data:
 			n_validation = len(validation_data)
@@ -67,7 +68,9 @@ class NeuralNet(object):
 			else:
 				print('epoch {} complete'.format(j))
 
-
-
-
+	def _update_mini_batch(self, mini_batch, eta):
+		"""
+		Update the network's weights and biases by applying SGD,
+		and using backpropagation
+		"""
 
