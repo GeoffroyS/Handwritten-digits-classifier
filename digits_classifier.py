@@ -100,6 +100,7 @@ def _display_digits_distrib(datasets_dict):
 	plt.show()
 
 
+
 if __name__ == '__main__':
 	datasets_dict = load_mnist('')
 	for dataset_type in datasets_dict:
@@ -108,6 +109,14 @@ if __name__ == '__main__':
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
 	print(type(test_data))
+
+	"""
+	TODO:
+	``training_data`` has to be a list containing 50,000 tuples ``(x, y)``
+    ``x`` has to be a 784-dimensional numpy.ndarray containing the input image
+    ``y`` has to be a 10-dimensional numpy.ndarray representing the unit vector corresponding to the correct digit for ``x``
+    """
+
 	nn = neuralnet.NeuralNet([784, 30, 10])
 	#_display_digits(datasets_dict)
 	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
