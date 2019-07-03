@@ -61,10 +61,10 @@ class NeuralNet(object):
 		for i in range(epochs):
 			random.shuffle(training_data)
 			mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, n, mini_batch_size)]
-			for Mini-batch in mini_batches:
-				self.update_mini_batch(mini_batch, eta)
+			for mini_batch in mini_batches:
+				self._update_mini_batch(mini_batch, eta)
 			if validation_data:
-				print('epoch {}: {} / {}'.format(j, self.evaluate(validation_data), n_validation))
+				print('epoch {}: {} / {}'.format(j, self._evaluate(validation_data), n_validation))
 			else:
 				print('epoch {} complete'.format(j))
 
@@ -77,7 +77,7 @@ class NeuralNet(object):
 		nabla_w = [np.zeros(w.shape) for w in self.weights]
 
 		for x, y in mini_batch:
-			delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+			delta_nabla_b, delta_nabla_w = self._backprop(x, y)
 			nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
 			nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
 		self.biases = [b-(eta/len(mini_batch))*nb for b, nb in zip (self.biases, nabla_b)]
@@ -90,8 +90,44 @@ class NeuralNet(object):
 		with the highest activation
 		data is either the validation data or test data
 		"""
-		results = [(np.argmax(self.feedforward(x)), y) for (x, y) in data]
+		results = [(np.argmax(self._feedforward(x)), y) for (x, y) in data]
 		return sum(int(x == y) for (x, y) in results)
 
-	def _backprop()
+	def _backprop(self, x, y):
+		"""
+		Return a table (nabla_b, nabla_w) representing the gradient
+		for the cost function.
+		Both nabla_b and nabla_w are lists of numpy arrays, one array being a layer
+		of biases or weights
+		"""
+		nabla_b = [np.zeros(b.shape) for b in self.biases]
+		nabla_w = [np.zeros(w.shape) for w in self.weights]
 
+		activation = x
+		activations = [x] #list storing all the activations, layer by layer
+		zs = [] #list to store all the z vectors, layer by layer
+
+		for b, w in zip(self.biases, self.weights):
+			z = np.dot(w, activation) + b
+			zs.append(z)
+			activation = sigmoid(z)
+			activations.append(activation)
+
+		#backward prop
+		delta = self._cost_derivative(activations[-1], y) * _sigmoid_gradient(zs[-1])
+		nabla_b[-1] = delta
+		nabla_w[-1] = np.dot(delta, activations[-2].transpose())
+
+		for l in range(2, self.number_layers):
+			z = zs[-1]
+			delta = np.dot(self.weights[-l+1].transpose(), delta) * _sigmoid_gradient(z)
+			nabla_b[-l] = delta
+			nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+
+		return (nabla_b, nabla_w)
+
+	def _cost_derivative(self, output_activations, y):
+		"""
+		Return the vector of partial derivatives
+		"""
+		return (output_activations - y)

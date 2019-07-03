@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
+import neuralnet
 
 def load_mnist (path, kind='train'):
 	"""
@@ -103,10 +104,14 @@ if __name__ == '__main__':
 	datasets_dict = load_mnist('')
 	for dataset_type in datasets_dict:
 		print(dataset_type, datasets_dict[dataset_type].shape)
-
-	_display_digits(datasets_dict)
-	_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	_display_digits_distrib(datasets_dict)
+	training_data = datasets_dict['train']
+	validation_data = datasets_dict['validation']
+	test_data = datasets_dict['test']
+	print(type(test_data))
+	nn = neuralnet.NeuralNet([784, 30, 10])
+	#_display_digits(datasets_dict)
+	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	#_display_digits_distrib(datasets_dict)
 
 
 
