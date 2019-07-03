@@ -83,7 +83,15 @@ class NeuralNet(object):
 		self.biases = [b-(eta/len(mini_batch))*nb for b, nb in zip (self.biases, nabla_b)]
 		self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip (self.weights, nabla_w)]
 
-	def _evaluate(self, validation_data):
+	def _evaluate(self, data):
+		"""
+		Return the number of test inputs for which the target was guessed correctly
+		The NN's output is assumed to be the index of the neuron (in the output layer)
+		with the highest activation
+		data is either the validation data or test data
+		"""
+		results = [(np.argmax(self.feedforward(x)), y) for (x, y) in data]
+		return sum(int(x == y) for (x, y) in results)
 
 	def _backprop()
 
