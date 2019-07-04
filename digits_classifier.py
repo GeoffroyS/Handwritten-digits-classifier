@@ -99,16 +99,32 @@ def _display_digits_distrib(datasets_dict):
 	plt.bar(x, y)
 	plt.show()
 
+def _df_to_ndarray(data_df):
+	data = data_df.loc[:, data_df.columns != 'target'].to_numpy()
+	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _eee(x)).to_numpy()
+	print(type(data), type(target_vectors))
+	print(data[0], target_vectors[0])
+	#this is wrong, for now.......
 
+	data_list = [(x, y) for x, y in zip(data, target_vectors)]
+	#return data_list
+
+def _eee(x):
+	e = np.zeros((10, 1))
+	e[x] = 1.0
+	return e
 
 if __name__ == '__main__':
 	datasets_dict = load_mnist('')
 	for dataset_type in datasets_dict:
 		print(dataset_type, datasets_dict[dataset_type].shape)
+	print('\n\n\n')
 	training_data = datasets_dict['train']
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
-	print(type(test_data))
+
+	data_list = _df_to_ndarray(test_data)
+	print(data_list)
 
 	"""
 	TODO:
@@ -117,7 +133,8 @@ if __name__ == '__main__':
     ``y`` has to be a 10-dimensional numpy.ndarray representing the unit vector corresponding to the correct digit for ``x``
     """
 
-	nn = neuralnet.NeuralNet([784, 30, 10])
+
+	#nn = neuralnet.NeuralNet([784, 30, 10])
 	#_display_digits(datasets_dict)
 	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
 	#_display_digits_distrib(datasets_dict)
