@@ -101,16 +101,17 @@ def _display_digits_distrib(datasets_dict):
 
 def _df_to_ndarray(data_df):
 	data = data_df.loc[:, data_df.columns != 'target'].to_numpy()
+	print(data_df.loc[:, data_df.columns != 'target'].to_numpy())
 	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _eee(x)).to_numpy()
-	print(type(data), type(target_vectors))
-	print(data[0], target_vectors[0])
-	#this is wrong, for now.......
+	print(data_df.loc[:, data_df.columns == 'target'])
+	#print(type(data), type(target_vectors))
+	#print(data[0], target_vectors[0])
 
 	data_list = [(x, y) for x, y in zip(data, target_vectors)]
-	#return data_list
+	return data_list
 
 def _eee(x):
-	e = np.zeros((10, 1))
+	e = np.zeros((1, 10))
 	e[x] = 1.0
 	return e
 
@@ -124,14 +125,19 @@ if __name__ == '__main__':
 	test_data = datasets_dict['test']
 
 	data_list = _df_to_ndarray(test_data)
-	print(data_list)
+	print(" Using the 'test' data\n",
+		"this should be a list/size 10000: ", type(data_list), len(data_list), "\n",
+		"this should be tuple/size 2: ", type(data_list[0]), len(data_list[0]), "\n", 
+		"this should be ndarray/size (784,): ", type(data_list[0][0]), data_list[0][0].shape, data_list[0][0], "\n",
+		"this should be ndarray/size (10,): ", type(data_list[0][1]), data_list[0][1].shape, data_list[0][1], "\n"
+		)
 
 	"""
 	TODO:
 	``training_data`` has to be a list containing 50,000 tuples ``(x, y)``
-    ``x`` has to be a 784-dimensional numpy.ndarray containing the input image
-    ``y`` has to be a 10-dimensional numpy.ndarray representing the unit vector corresponding to the correct digit for ``x``
-    """
+	``x`` has to be a 784-dimensional numpy.ndarray containing the input image
+	``y`` has to be a 10-dimensional numpy.ndarray representing the unit vector corresponding to the correct digit for ``x``
+	"""
 
 
 	#nn = neuralnet.NeuralNet([784, 30, 10])
