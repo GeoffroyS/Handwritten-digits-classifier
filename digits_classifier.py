@@ -100,8 +100,10 @@ def _display_digits_distrib(datasets_dict):
 	plt.show()
 
 def _df_to_ndarray(data_df):
-	data = data_df.loc[:, data_df.columns != 'target'].to_numpy()
-	print(data_df.loc[:, data_df.columns != 'target'].to_numpy())
+	data = data_df.loc[:, data_df.columns != 'target'].to_numpy()#.reshape((784, 1))
+	data = [np.reshape(item, (784, 1)) for item in data]
+	print(len(data))
+	#print(data_df.loc[:, data_df.columns != 'target'].to_numpy().shape)
 	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _eee(x)).to_numpy()
 	print(data_df.loc[:, data_df.columns == 'target'])
 	#print(type(data), type(target_vectors))
@@ -111,7 +113,7 @@ def _df_to_ndarray(data_df):
 	return data_list
 
 def _eee(x):
-	e = np.zeros((1, 10))
+	e = np.zeros((10, 1))
 	e[x] = 1.0
 	return e
 
@@ -140,7 +142,8 @@ if __name__ == '__main__':
 	"""
 
 
-	#nn = neuralnet.NeuralNet([784, 30, 10])
+	nn = neuralnet.NeuralNet([784, 30, 10])
+	nn._stochastic_gd(data_list, 30, 10, 100.0) #validation_data=validation_data)
 	#_display_digits(datasets_dict)
 	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
 	#_display_digits_distrib(datasets_dict)
