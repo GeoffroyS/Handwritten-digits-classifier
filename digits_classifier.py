@@ -102,10 +102,12 @@ def _display_digits_distrib(datasets_dict):
 def _df_to_ndarray(data_df):
 	data = data_df.loc[:, data_df.columns != 'target'].to_numpy()#.reshape((784, 1))
 	data = [np.reshape(item, (784, 1)) for item in data]
-	print(len(data))
+	#print(len(data))
 	#print(data_df.loc[:, data_df.columns != 'target'].to_numpy().shape)
-	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _eee(x)).to_numpy()
-	print(data_df.loc[:, data_df.columns == 'target'])
+	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _eee(x))#.to_numpy()
+
+	print(target_vectors.iloc[0:2].to_numpy())
+	#print(data_df.loc[:, data_df.columns == 'target'])
 	#print(type(data), type(target_vectors))
 	#print(data[0], target_vectors[0])
 
@@ -127,12 +129,12 @@ if __name__ == '__main__':
 	test_data = datasets_dict['test']
 
 	data_list = _df_to_ndarray(test_data)
-	print(" Using the 'test' data\n",
-		"this should be a list/size 10000: ", type(data_list), len(data_list), "\n",
-		"this should be tuple/size 2: ", type(data_list[0]), len(data_list[0]), "\n", 
-		"this should be ndarray/size (784,): ", type(data_list[0][0]), data_list[0][0].shape, data_list[0][0], "\n",
-		"this should be ndarray/size (10,): ", type(data_list[0][1]), data_list[0][1].shape, data_list[0][1], "\n"
-		)
+	# print(" Using the 'test' data\n",
+	# 	"this should be a list/size 10000: ", type(data_list), len(data_list), "\n",
+	# 	"this should be tuple/size 2: ", type(data_list[0]), len(data_list[0]), "\n", 
+	# 	"this should be ndarray/size (784,): ", type(data_list[0][0]), data_list[0][0].shape, data_list[0][0], "\n",
+	# 	"this should be ndarray/size (10,): ", type(data_list[0][1]), data_list[0][1].shape, data_list[0][1], "\n"
+	# 	)
 
 	"""
 	TODO:
@@ -142,8 +144,9 @@ if __name__ == '__main__':
 	"""
 
 
-	nn = neuralnet.NeuralNet([784, 30, 10])
-	nn._stochastic_gd(data_list, 30, 10, 100.0) #validation_data=validation_data)
+	# nn = neuralnet.NeuralNet([784, 35, 10])
+	# nn._stochastic_gd(data_list, 30, 10, 100.0) #validation_data=validation_data)
+	
 	#_display_digits(datasets_dict)
 	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
 	#_display_digits_distrib(datasets_dict)

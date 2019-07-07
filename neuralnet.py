@@ -42,7 +42,7 @@ class NeuralNet(object):
 		a is an (n, 1) numpy ndarray, not a (n,) vector
 		"""
 		for b, w in zip(self.biases, self.weights):
-			a = _sigmoid(np.dot(w, a) + b)
+			a = self._sigmoid(np.dot(w, a) + b)
 		return a
 
 	def _stochastic_gd(self, training_data, epochs, mini_batch_size, eta=0.1, validation_data=None):
@@ -110,17 +110,19 @@ class NeuralNet(object):
 		for b, w in zip(self.biases, self.weights):
 			z = np.dot(w, activation) + b
 			zs.append(z)
-			activation = sigmoid(z)
+			activation = self._sigmoid(z)
 			activations.append(activation)
 
 		#backward prop
-		delta = self._cost_derivative(activations[-1], y) * _sigmoid_gradient(zs[-1])
+		print("activations: \n", activations[-1], "\n\n", "y: \n", y[0])
+		delta = self._cost_derivative(activations[-1], y) * self._sigmoid_gradient(zs[-1])
 		nabla_b[-1] = delta
 		nabla_w[-1] = np.dot(delta, activations[-2].transpose())
 
+		# l is the last layer of neurons
 		for l in range(2, self.number_layers):
 			z = zs[-1]
-			delta = np.dot(self.weights[-l+1].transpose(), delta) * _sigmoid_gradient(z)
+			delta = np.dot(self.weights[-l+1].transpose(), delta) * self._sigmoid_gradient(z)
 			nabla_b[-l] = delta
 			nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
 
