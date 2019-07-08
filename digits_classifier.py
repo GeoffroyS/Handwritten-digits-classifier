@@ -102,14 +102,10 @@ def _display_digits_distrib(datasets_dict):
 def _df_to_ndarray(data_df):
 	data = data_df.loc[:, data_df.columns != 'target'].to_numpy()#.reshape((784, 1))
 	data = [np.reshape(item, (784, 1)) for item in data]
-	#print(len(data))
-	#print(data_df.loc[:, data_df.columns != 'target'].to_numpy().shape)
+
 	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _eee(x))#.to_numpy()
 
 	print(target_vectors.iloc[0:2].to_numpy())
-	#print(data_df.loc[:, data_df.columns == 'target'])
-	#print(type(data), type(target_vectors))
-	#print(data[0], target_vectors[0])
 
 	data_list = [(x, y) for x, y in zip(data, target_vectors)]
 	return data_list
