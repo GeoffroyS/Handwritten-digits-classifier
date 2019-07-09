@@ -99,18 +99,21 @@ def _display_digits_distrib(datasets_dict):
 	plt.bar(x, y)
 	plt.show()
 
+def _row_to_ndarray(row):
+	return row.to_numpy()
+
 def _df_to_ndarray(data_df):
-	data = data_df.loc[:, data_df.columns != 'target'].to_numpy()#.reshape((784, 1))
-	data = [np.reshape(item, (784, 1)) for item in data]
+	data = data_df.loc[:2, data_df.columns != 'target'].apply(_row_to_ndarray).to_numpy()#.reshape((784, 1))
+	print(data)
+	#data = [np.reshape(item, (784, 1)) for item in data]
 
-	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _eee(x))#.to_numpy()
-
-	print(target_vectors.iloc[0:2].to_numpy())
+	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _digit_to_10array(x)).to_numpy()
+	print(target_vectors[0][1])
 
 	data_list = [(x, y) for x, y in zip(data, target_vectors)]
 	return data_list
 
-def _eee(x):
+def _digit_to_10array(x):
 	e = np.zeros((10, 1))
 	e[x] = 1.0
 	return e
