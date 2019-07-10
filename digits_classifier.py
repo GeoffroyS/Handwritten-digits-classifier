@@ -104,6 +104,12 @@ def _display_digits_distrib(datasets_dict):
 	plt.show()
 
 def _df_to_ndarray(data_df, dataset_type):
+	"""
+	This returns a list containing x tuples with x=df.shape[0]
+	Each tuple contains either
+	- 2 ndarrays of shapes (784,1) and (10,1) (for the training set)
+	- 1 ndarray of shape (784,1) and an int corresponding to the target (for the validation and test sets)
+	"""
 	data = data_df.loc[:, data_df.columns != 'target'].apply(lambda row: row.to_numpy(dtype='float32').reshape(784,1), axis=1).tolist()
 
 	if dataset_type == 'training':
@@ -129,22 +135,13 @@ if __name__ == '__main__':
 	training_data = datasets_dict['train']
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
-	#_display_digits(datasets_dict)
-	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	#_display_digits_distrib(datasets_dict)
+	_display_digits(datasets_dict)
+	_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	_display_digits_distrib(datasets_dict)
 
 	training_data_list = _df_to_ndarray(training_data, dataset_type='training')
 	test_data_list = _df_to_ndarray(test_data, dataset_type='test')
 	validation_data_list = _df_to_ndarray(validation_data, dataset_type='validation')
-	#print(validation_data_list[0])
-	
-	# print(" Using the 'test' data\n",
-	# 	"this should be a list/size 10000: ", type(data_list), len(data_list), "\n",
-	# 	"this should be tuple/size 2: ", type(data_list[0]), len(data_list[0]), "\n", 
-	# 	"this should be ndarray/size (784,): ", type(data_list[0][0]), data_list[0][0].shape, data_list[0][0], "\n",
-	# 	"this should be ndarray/size (10,): ", type(data_list[0][1]), data_list[0][1].shape, data_list[0][1], "\n"
-	# 	)
-
 
 	nn = neuralnet.NeuralNet([784, 30, 10])
 	nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)
