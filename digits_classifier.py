@@ -47,12 +47,16 @@ def load_mnist (path, kind='train'):
 				test_size=10000, 
 				random_state=0
 				)
+			X_train = X_train.applymap(lambda x: x/255)
+			X_validation = X_validation.applymap(lambda x: x/255)
+			#print(X_train.loc[0].tolist())
 			df_train = pd.concat([X_train, y_train], axis=1, sort=False)
 			df_validation = pd.concat([X_validation, y_validation], axis=1, sort=False)
 			df_dict["train"] = df_train
 			df_dict["validation"] = df_validation
 		else:
-			df_dict["test"] = df
+			df.loc[:, df.columns != 'target'].applymap(lambda x: x/255)
+			df_dict["test"] = df 
 
 	return df_dict
 
@@ -99,11 +103,16 @@ def _display_digits_distrib(datasets_dict):
 	plt.bar(x, y)
 	plt.show()
 
-def _df_to_ndarray(data_df):
+def _df_to_ndarray(data_df, dataset_type):
 	data = data_df.loc[:, data_df.columns != 'target'].apply(lambda row: row.to_numpy(dtype='float32').reshape(784,1), axis=1).tolist()
-	target_vectors = data_df.loc[:, data_df.columns == 'target'].apply(_digit_to_10array, axis=1).tolist()
 
-	data_list = list(zip(data, target_vectors))
+	if dataset_type == 'training':
+		targets = data_df.loc[:, data_df.columns == 'target'].apply(_digit_to_10array, axis=1).tolist()
+
+	else:
+		targets = data_df['target'].tolist()
+
+	data_list = list(zip(data, targets))
 
 	return data_list
 
@@ -124,10 +133,11 @@ if __name__ == '__main__':
 	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
 	#_display_digits_distrib(datasets_dict)
 
-	training_data_list = _df_to_ndarray(training_data)
-	test_data_list = _df_to_ndarray(test_data)
-	validation_data_list = _df_to_ndarray(validation_data)
-
+	training_data_list = _df_to_ndarray(training_data, dataset_type='training')
+	test_data_list = _df_to_ndarray(test_data, dataset_type='test')
+	validation_data_list = _df_to_ndarray(validation_data, dataset_type='validation')
+	#print(validation_data_list[0])
+	
 	# print(" Using the 'test' data\n",
 	# 	"this should be a list/size 10000: ", type(data_list), len(data_list), "\n",
 	# 	"this should be tuple/size 2: ", type(data_list[0]), len(data_list[0]), "\n", 
@@ -136,7 +146,7 @@ if __name__ == '__main__':
 	# 	)
 
 
-	nn = neuralnet.NeuralNet([784, 35, 10])
+	nn = neuralnet.NeuralNet([784, 30, 10])
 	nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)
 
 

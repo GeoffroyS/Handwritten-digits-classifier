@@ -24,7 +24,7 @@ class NeuralNet(object):
 		No biases for the input layer
 		TODO: Compare with Xavier/He initialisations
 		"""
-		np.random.seed(1)
+		# np.random.seed(1)
 		self.sizes = sizes
 		self.number_layers = len(sizes)
 		self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
@@ -64,9 +64,9 @@ class NeuralNet(object):
 			for mini_batch in mini_batches:
 				self._update_mini_batch(mini_batch, eta)
 			if validation_data:
-				print('epoch {}: {} / {}'.format(j, self._evaluate(validation_data), n_validation))
+				print('epoch {}: {} / {}'.format(i, self._evaluate(validation_data), n_validation))
 			else:
-				print('epoch {} complete'.format(j))
+				print('epoch {} complete'.format(i))
 
 	def _update_mini_batch(self, mini_batch, eta):
 		"""
@@ -114,14 +114,13 @@ class NeuralNet(object):
 			activations.append(activation)
 
 		#backward prop
-		print("activations: \n", activations[-1], "\n\n", "y: \n", y[0])
 		delta = self._cost_derivative(activations[-1], y) * self._sigmoid_gradient(zs[-1])
 		nabla_b[-1] = delta
 		nabla_w[-1] = np.dot(delta, activations[-2].transpose())
 
 		# l is the last layer of neurons
 		for l in range(2, self.number_layers):
-			z = zs[-1]
+			z = zs[-l]
 			delta = np.dot(self.weights[-l+1].transpose(), delta) * self._sigmoid_gradient(z)
 			nabla_b[-l] = delta
 			nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
