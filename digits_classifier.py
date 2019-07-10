@@ -99,18 +99,12 @@ def _display_digits_distrib(datasets_dict):
 	plt.bar(x, y)
 	plt.show()
 
-def _row_to_ndarray(row):
-	return row.to_numpy()
-
 def _df_to_ndarray(data_df):
-	data = data_df.loc[:2, data_df.columns != 'target'].apply(_row_to_ndarray).to_numpy()#.reshape((784, 1))
-	print(data)
-	#data = [np.reshape(item, (784, 1)) for item in data]
+	data = data_df.loc[:, data_df.columns != 'target'].apply(lambda row: row.to_numpy(dtype='float32').reshape(784,1), axis=1).tolist()
+	target_vectors = data_df.loc[:, data_df.columns == 'target'].apply(_digit_to_10array, axis=1).tolist()
 
-	target_vectors = data_df.loc[:, data_df.columns == 'target'].applymap(lambda x: _digit_to_10array(x)).to_numpy()
-	print(target_vectors[0][1])
+	data_list = list(zip(data, target_vectors))
 
-	data_list = [(x, y) for x, y in zip(data, target_vectors)]
 	return data_list
 
 def _digit_to_10array(x):
@@ -126,8 +120,14 @@ if __name__ == '__main__':
 	training_data = datasets_dict['train']
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
+	#_display_digits(datasets_dict)
+	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	#_display_digits_distrib(datasets_dict)
 
-	data_list = _df_to_ndarray(test_data)
+	training_data_list = _df_to_ndarray(training_data)
+	test_data_list = _df_to_ndarray(test_data)
+	validation_data_list = _df_to_ndarray(validation_data)
+
 	# print(" Using the 'test' data\n",
 	# 	"this should be a list/size 10000: ", type(data_list), len(data_list), "\n",
 	# 	"this should be tuple/size 2: ", type(data_list[0]), len(data_list[0]), "\n", 
@@ -135,20 +135,9 @@ if __name__ == '__main__':
 	# 	"this should be ndarray/size (10,): ", type(data_list[0][1]), data_list[0][1].shape, data_list[0][1], "\n"
 	# 	)
 
-	"""
-	TODO:
-	``training_data`` has to be a list containing 50,000 tuples ``(x, y)``
-	``x`` has to be a 784-dimensional numpy.ndarray containing the input image
-	``y`` has to be a 10-dimensional numpy.ndarray representing the unit vector corresponding to the correct digit for ``x``
-	"""
 
-
-	# nn = neuralnet.NeuralNet([784, 35, 10])
-	# nn._stochastic_gd(data_list, 30, 10, 100.0) #validation_data=validation_data)
-	
-	#_display_digits(datasets_dict)
-	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	#_display_digits_distrib(datasets_dict)
+	nn = neuralnet.NeuralNet([784, 35, 10])
+	nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)
 
 
 
