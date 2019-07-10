@@ -47,18 +47,24 @@ def load_mnist (path, kind='train'):
 				test_size=10000, 
 				random_state=0
 				)
-			X_train = X_train.applymap(lambda x: x/255)
-			X_validation = X_validation.applymap(lambda x: x/255)
+			X_train = X_train.applymap(_normalize_features)
+			X_validation = X_validation.applymap(_normalize_features)
 			#print(X_train.loc[0].tolist())
 			df_train = pd.concat([X_train, y_train], axis=1, sort=False)
 			df_validation = pd.concat([X_validation, y_validation], axis=1, sort=False)
 			df_dict["train"] = df_train
 			df_dict["validation"] = df_validation
 		else:
-			df.loc[:, df.columns != 'target'].applymap(lambda x: x/255)
+			df.loc[:, df.columns != 'target'].applymap(_normalize_features)
 			df_dict["test"] = df 
 
 	return df_dict
+
+def _normalize_features(value):
+	"""
+	To do: compare different normalisations
+	"""
+	return value/255
 
 def _display_digits(datasets_dict, plot_type='zero_nine', digit=3):
 	"""
@@ -135,9 +141,9 @@ if __name__ == '__main__':
 	training_data = datasets_dict['train']
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
-	_display_digits(datasets_dict)
-	_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	_display_digits_distrib(datasets_dict)
+	#_display_digits(datasets_dict)
+	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	#_display_digits_distrib(datasets_dict)
 
 	training_data_list = _df_to_ndarray(training_data, dataset_type='training')
 	test_data_list = _df_to_ndarray(test_data, dataset_type='test')
