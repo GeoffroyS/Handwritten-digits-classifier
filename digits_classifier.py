@@ -152,5 +152,8 @@ if __name__ == '__main__':
 	nn = neuralnet.NeuralNet([784, 30, 10])
 	nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)
 
+	print(np.argmax(nn._feedforward(test_data_list[0][0])))
+	print(test_data_list[0][1])
+
 
 
