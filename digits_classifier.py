@@ -106,6 +106,9 @@ def _display_digits_distrib(datasets_dict):
 	x = [key for key in digits_dict]
 	y = [val for val in digits_dict.values()]
 
+	plt.title('Digits distribution')
+	plt.xlabel('Digits')
+	plt.ylabel('Number of instances')
 	plt.bar(x, y)
 	plt.show()
 
@@ -141,9 +144,9 @@ if __name__ == '__main__':
 	training_data = datasets_dict['train']
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
-	#_display_digits(datasets_dict)
-	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	#_display_digits_distrib(datasets_dict)
+	_display_digits(datasets_dict)
+	_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	_display_digits_distrib(datasets_dict)
 
 	training_data_list = _df_to_ndarray(training_data, dataset_type='training')
 	test_data_list = _df_to_ndarray(test_data, dataset_type='test')
