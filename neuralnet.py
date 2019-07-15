@@ -61,10 +61,16 @@ class NeuralNet(object):
 		for i in range(epochs):
 			random.shuffle(training_data)
 			mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, n, mini_batch_size)]
+			evaluations = [0]
 			for mini_batch in mini_batches:
 				self._update_mini_batch(mini_batch, eta)
 			if validation_data:
-				print('epoch {}: {} / {}'.format(i, self._evaluate(validation_data), n_validation))
+				evaluation = self._evaluate(validation_data)
+				if evaluation > evaluations[-1:]:
+					best_weights = self.weights
+					best_biases = self.biases
+				evaluations.append(evaluation)
+				print('epoch {}: {} / {}'.format(i, evaluation, n_validation))
 			else:
 				print('epoch {} complete'.format(i))
 
