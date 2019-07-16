@@ -15,6 +15,13 @@ The distribution of all 10 digits in the dataset:
 
 ![digits distribution](https://i.imgur.com/0dfifFY.png "Distribution of all 10 digits in the dataset")
 
+
+## Training the CNN
+Let's create a CNN with 784 (28px * 28px) neurons in the input layer, 30 in one hidden layer and 10 (for the values 0 to 9) in the output
+layer: `nn = neuralnet.NeuralNet([784, 30, 10])`
+and then train it:
+`nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)`
+
 Evaluation on the validation dataset for all 30 epochs:
 ```
 epoch 0: 7313 / 10000
@@ -31,7 +38,9 @@ epoch 28: 9470 / 10000
 epoch 29: 9498 / 10000
 ```
 
-We keep the "best weights" and "best biases" and run the `evaluate` method on the test dataset.
+## Evaluation on the test dataset
+We keep the "best weights" and "best biases" and run the `evaluate` method on the test dataset:
+`test_data_eval = nn.evaluate(test_data_list)`
 Note that the "best weights/biases" are currently simply the weights/biases that got the best evaluation score on the validation set (this is to be changed, obviously)
 
 ```Evaluation for the test dataset: 9317 / 10000```
