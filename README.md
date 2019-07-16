@@ -1,13 +1,14 @@
 # Handwritten digits classification using a Convolutional Neural Network
 
-## What?
+## Getting started
+### What?
 A Convolutional Neural Network to classify digits from the MNIST dataset
 To do:
 * some more data exploration/plotting
 * work on the optimisation of the learning rate
 * improve data normalisation
 
-## How?
+### How?
 1. Download ubyte files from [Yann LeCun's page](http://yann.lecun.com/exdb/mnist/)
 2. `pip install -r requirements.txt`
 
