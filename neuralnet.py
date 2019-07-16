@@ -29,6 +29,8 @@ class NeuralNet(object):
 		self.number_layers = len(sizes)
 		self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
 		self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+		self.best_weights = []
+		self.best_biases = []
 
 	def _sigmoid(self, z):
 		return 1.0/(1.0+np.exp(-z))
@@ -61,18 +63,21 @@ class NeuralNet(object):
 		for i in range(epochs):
 			random.shuffle(training_data)
 			mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, n, mini_batch_size)]
-			evaluations = [0]
+			previous_evaluation = 0
+
 			for mini_batch in mini_batches:
 				self._update_mini_batch(mini_batch, eta)
 			if validation_data:
-				evaluation = self._evaluate(validation_data)
-				if evaluation > evaluations[-1:]:
-					best_weights = self.weights
-					best_biases = self.biases
-				evaluations.append(evaluation)
+				evaluation = self.evaluate(validation_data)
+				if evaluation > previous_evaluation:
+					self.best_weights = self.weights
+					self.best_biases = self.biases
+				previous_evaluation = evaluation
 				print('epoch {}: {} / {}'.format(i, evaluation, n_validation))
 			else:
 				print('epoch {} complete'.format(i))
+		self.weights = self.best_weights
+		self.biases = self.best_biases
 
 	def _update_mini_batch(self, mini_batch, eta):
 		"""
@@ -89,7 +94,7 @@ class NeuralNet(object):
 		self.biases = [b-(eta/len(mini_batch))*nb for b, nb in zip (self.biases, nabla_b)]
 		self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip (self.weights, nabla_w)]
 
-	def _evaluate(self, data):
+	def evaluate(self, data):
 		"""
 		Return the number of test inputs for which the target was guessed correctly
 		The NN's output is assumed to be the index of the neuron (in the output layer)
