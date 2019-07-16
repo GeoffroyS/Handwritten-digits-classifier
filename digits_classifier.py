@@ -96,6 +96,10 @@ def _display_digits(datasets_dict, plot_type='zero_nine', digit=3):
 	plt.show()
 
 def _display_digits_distrib(datasets_dict):
+	"""
+	Plot the distribution of the 10 digits in the training dataset
+	using a simple bar chart
+	"""
 	df_train = datasets_dict["train"]
 	digits_dict = {}
 	for i in range(10):
@@ -157,8 +161,8 @@ if __name__ == '__main__':
 	validation_data_list = _df_to_ndarray(validation_data, dataset_type='validation')
 
 	# nn = neuralnet.NeuralNet([784, 30, 10])
-	nn = neuralnet.NeuralNet([784, 200, 80, 10])
-	nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)
+	nn = neuralnet.NeuralNet([784, 40, 20, 10])
+	nn._stochastic_gd(training_data_list, 30, 10, 1.0, validation_data=validation_data_list)
 
 	n_test = len(validation_data)
 	test_data_eval = nn.evaluate(test_data_list)
