@@ -138,15 +138,19 @@ def _digit_to_10array(x):
 
 if __name__ == '__main__':
 	datasets_dict = load_mnist('')
+
+	print('\n\n')
 	for dataset_type in datasets_dict:
 		print(dataset_type, datasets_dict[dataset_type].shape)
-	print('\n\n\n')
+	print('\n\n')
+
 	training_data = datasets_dict['train']
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
-	_display_digits(datasets_dict)
-	_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	_display_digits_distrib(datasets_dict)
+
+	#_display_digits(datasets_dict)
+	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	#_display_digits_distrib(datasets_dict)
 
 	training_data_list = _df_to_ndarray(training_data, dataset_type='training')
 	test_data_list = _df_to_ndarray(test_data, dataset_type='test')
@@ -155,12 +159,15 @@ if __name__ == '__main__':
 	nn = neuralnet.NeuralNet([784, 30, 10])
 	nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)
 
-	i = 0
-	for image in test_data_list:
-		print("prediction: ", np.argmax(nn._feedforward(image[0])), "actual: ", image[1])
-		if i==10:
-			break
-		i=i+1
+	n_test = len(validation_data)
+	test_data_eval = nn.evaluate(test_data_list)
+	print('evaluation for the test dataset: {} / {}'.format(test_data_eval, n_test))
+	# i = 0
+	# for image in test_data_list:
+	# 	print("prediction: ", np.argmax(nn._feedforward(image[0])), "actual: ", image[1])
+	# 	if i==10:
+	# 		break
+	# 	i=i+1
 
 
 
