@@ -156,18 +156,13 @@ if __name__ == '__main__':
 	test_data_list = _df_to_ndarray(test_data, dataset_type='test')
 	validation_data_list = _df_to_ndarray(validation_data, dataset_type='validation')
 
-	nn = neuralnet.NeuralNet([784, 30, 10])
+	# nn = neuralnet.NeuralNet([784, 30, 10])
+	nn = neuralnet.NeuralNet([784, 200, 80, 10])
 	nn._stochastic_gd(training_data_list, 30, 10, 3.0, validation_data=validation_data_list)
 
 	n_test = len(validation_data)
 	test_data_eval = nn.evaluate(test_data_list)
 	print('evaluation for the test dataset: {} / {}'.format(test_data_eval, n_test))
-	# i = 0
-	# for image in test_data_list:
-	# 	print("prediction: ", np.argmax(nn._feedforward(image[0])), "actual: ", image[1])
-	# 	if i==10:
-	# 		break
-	# 	i=i+1
 
 
 
