@@ -3,6 +3,7 @@
 ## Getting started
 ### What?
 A Neural Network to classify digits from the MNIST dataset
+
 To do:
 * some more data exploration/plotting
 * work on the optimisation of the learning rate
