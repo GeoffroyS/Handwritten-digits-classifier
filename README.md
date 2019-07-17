@@ -1,8 +1,8 @@
-# Handwritten digits classification using a Convolutional Neural Network
+# Handwritten digits classification using a Neural Network
 
 ## Getting started
 ### What?
-A Convolutional Neural Network to classify digits from the MNIST dataset
+A Neural Network to classify digits from the MNIST dataset
 To do:
 * some more data exploration/plotting
 * work on the optimisation of the learning rate
@@ -22,7 +22,7 @@ A sample of 10 different 8s from the MNIST dataset:
 
 ![8s](https://i.imgur.com/aZKllwM.png "A sample of different 8s from the MNIST dataset")
 
-The distribution of all 10 digits in the dataset:
+The distribution of all 10 digits in the training dataset:
 
 ![digits distribution](https://i.imgur.com/0dfifFY.png "Distribution of all 10 digits in the dataset")
 
