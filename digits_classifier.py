@@ -144,6 +144,7 @@ if __name__ == '__main__':
 	datasets_dict = load_mnist('')
 
 	print('\n\n')
+	# print each dataset's shape
 	for dataset_type in datasets_dict:
 		print(dataset_type, datasets_dict[dataset_type].shape)
 	print('\n\n')
@@ -152,16 +153,16 @@ if __name__ == '__main__':
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
 
-	#_display_digits(datasets_dict)
-	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	#_display_digits_distrib(datasets_dict)
+	_display_digits(datasets_dict)
+	_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	_display_digits_distrib(datasets_dict)
 
+	# transform each dataframe into a numpy.ndarray to be used by the neural net
 	training_data_list = _df_to_ndarray(training_data, dataset_type='training')
 	test_data_list = _df_to_ndarray(test_data, dataset_type='test')
 	validation_data_list = _df_to_ndarray(validation_data, dataset_type='validation')
 
-	# nn = neuralnet.NeuralNet([784, 30, 10])
-	nn = neuralnet.NeuralNet([784, 40, 20, 10])
+	nn = neuralnet.NeuralNet([784, 30, 10])
 	nn._stochastic_gd(training_data_list, 30, 10, 1.0, validation_data=validation_data_list)
 
 	n_test = len(validation_data)
