@@ -136,6 +136,9 @@ def _df_to_ndarray(data_df, dataset_type):
 	return data_list
 
 def _digit_to_10array(x):
+	"""
+	input is a digit (0-9) that gets "converted" to a numpy.ndarray of shape (10,1)
+	"""
 	e = np.zeros((10, 1))
 	e[x] = 1.0
 	return e
@@ -143,11 +146,10 @@ def _digit_to_10array(x):
 if __name__ == '__main__':
 	datasets_dict = load_mnist('')
 
-	print('\n\n')
 	# print each dataset's shape
 	for dataset_type in datasets_dict:
 		print(dataset_type, datasets_dict[dataset_type].shape)
-	print('\n\n')
+	print('\n')
 
 	training_data = datasets_dict['train']
 	validation_data = datasets_dict['validation']
