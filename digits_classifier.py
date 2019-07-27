@@ -61,9 +61,6 @@ def load_mnist (path, kind='train'):
 	return df_dict
 
 def _normalize_features(value):
-	"""
-	To do: compare different normalisations
-	"""
 	return value/255
 
 def _display_digits(datasets_dict, plot_type='zero_nine', digit=3):
@@ -155,9 +152,9 @@ if __name__ == '__main__':
 	validation_data = datasets_dict['validation']
 	test_data = datasets_dict['test']
 
-	_display_digits(datasets_dict)
-	_display_digits(datasets_dict, plot_type='same_digit', digit=8)
-	_display_digits_distrib(datasets_dict)
+	#_display_digits(datasets_dict)
+	#_display_digits(datasets_dict, plot_type='same_digit', digit=8)
+	#_display_digits_distrib(datasets_dict)
 
 	# transform each dataframe into a numpy.ndarray to be used by the neural net
 	training_data_list = _df_to_ndarray(training_data, dataset_type='training')
@@ -171,5 +168,5 @@ if __name__ == '__main__':
 	test_data_eval = nn.evaluate(test_data_list)
 	print('evaluation for the test dataset: {} / {}'.format(test_data_eval, n_test))
 
-
+	#The values 0.1307 and 0.3081 are the global mean and standard deviation of the MNIST dataset
 
